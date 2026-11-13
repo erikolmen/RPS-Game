@@ -85,3 +85,7 @@ This repo uses GitHub Actions as an automatic check step. Whenever code is pushe
 4. Run `pytest` to run all of the automated tests (using the `ALPHAVANTAGE_API_KEY` repository secret for the stocks tests).
 
 If any of these steps fail, the pull request shows a red X, and the code should be fixed before merging. If they all pass, it shows a green check. See `.github/workflows/python-app.yml` for the workflow configuration.
+
+## AI Credit
+
+I used Claude Code to help review my code, simplify in areas, and check that my tests and CI build pass.
