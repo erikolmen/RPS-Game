@@ -1,0 +1,8 @@
+
+# packages used in the app:
+python-dotenv
+pandas
+plotly
+
+# packages used for testing:
+pytest
