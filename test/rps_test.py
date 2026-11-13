@@ -1,25 +1,36 @@
+
+# this is the "test/rps_test.py" file...
+
 import pytest
+
 from app.rps import determine_winner
 
 
-def test_ties():
-    assert determine_winner("rock", "rock") == "tie"
-    assert determine_winner("paper", "paper") == "tie"
-    assert determine_winner("scissors", "scissors") == "tie"
+def test_example():
+    assert 2 + 2 == 4
 
 
-def test_user_wins():
-    assert determine_winner("rock", "scissors") == "user"
-    assert determine_winner("paper", "rock") == "user"
-    assert determine_winner("scissors", "paper") == "user"
+def test_winners():
+    # tests for all edge cases:
 
+    assert determine_winner(u="rock", c="rock") == "TIE GAME"
+    assert determine_winner(u="rock", c="paper") == "COMPUTER WINS"
+    assert determine_winner(u="rock", c="scissors") == "USER WINS"
 
-def test_computer_wins():
-    assert determine_winner("scissors", "rock") == "computer"
-    assert determine_winner("rock", "paper") == "computer"
-    assert determine_winner("paper", "scissors") == "computer"
+    assert determine_winner(u="paper", c="rock") == "USER WINS"
+    assert determine_winner(u="paper", c="paper") == "TIE GAME"
+    assert determine_winner(u="paper", c="scissors") == "COMPUTER WINS"
+
+    assert determine_winner(u="scissors", c="scissors") == "TIE GAME"
+    assert determine_winner(u="scissors", c="paper") == "USER WINS"
+    assert determine_winner(u="scissors", c="rock") == "COMPUTER WINS"
 
 
 def test_invalid_choice():
+    # invalid inputs should raise an error instead of picking a winner
+
     with pytest.raises(ValueError):
-        determine_winner("banana", "rock")
+        determine_winner(u="banana", c="rock")
+
+    with pytest.raises(ValueError):
+        determine_winner(u="rock", c="banana")
