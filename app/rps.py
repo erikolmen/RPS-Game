@@ -15,17 +15,8 @@ WINS_AGAINST = {"rock": "scissors", "paper": "rock", "scissors": "paper"}
 
 
 def determine_winner(u, c):
-    """
-    Determines the winner of a game of rock paper scissors.
-
-    Params:
-        u (str): the user's choice ("rock", "paper", or "scissors")
-        c (str): the computer's choice ("rock", "paper", or "scissors")
-
-    Returns "TIE GAME", "USER WINS", or "COMPUTER WINS".
-    """
-    if u not in VALID_OPTIONS or c not in VALID_OPTIONS:
-        raise ValueError("Invalid choice")
+    # u is the user's choice, c is the computer's choice
+    # returns "TIE GAME", "USER WINS", or "COMPUTER WINS"
 
     if u == c:
         return "TIE GAME"

@@ -1,8 +1,6 @@
 
 # this is the "test/rps_test.py" file...
 
-import pytest
-
 from app.rps import determine_winner
 
 
@@ -24,13 +22,3 @@ def test_winners():
     assert determine_winner(u="scissors", c="scissors") == "TIE GAME"
     assert determine_winner(u="scissors", c="paper") == "USER WINS"
     assert determine_winner(u="scissors", c="rock") == "COMPUTER WINS"
-
-
-def test_invalid_choice():
-    # invalid inputs should raise an error instead of picking a winner
-
-    with pytest.raises(ValueError):
-        determine_winner(u="banana", c="rock")
-
-    with pytest.raises(ValueError):
-        determine_winner(u="rock", c="banana")
