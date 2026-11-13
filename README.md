@@ -73,4 +73,15 @@ To run tests:
 pytest
 ```
 
-Tests also run automatically on GitHub (using GitHub Actions) whenever code is pushed to, or a pull request is opened against, the `main` branch. See `.github/workflows/python-app.yml`.
+## Continuous Integration
+
+[![Python application](https://github.com/erikolmen/RPS-Game/actions/workflows/python-app.yml/badge.svg)](https://github.com/erikolmen/RPS-Game/actions/workflows/python-app.yml)
+
+This repo uses GitHub Actions as an automatic check step. Whenever code is pushed to, or a pull request is opened against, the `main` branch, GitHub will:
+
+1. Download the code and set up Python.
+2. Install the packages listed in `requirements.txt`.
+3. Run `flake8` to check for Python syntax errors.
+4. Run `pytest` to run all of the automated tests (using the `ALPHAVANTAGE_API_KEY` repository secret for the stocks tests).
+
+If any of these steps fail, the pull request shows a red X, and the code should be fixed before merging. If they all pass, it shows a green check. See `.github/workflows/python-app.yml` for the workflow configuration.
