@@ -1,56 +1,43 @@
-# Rock Paper Scissors Game (Command Line)
-
-# ORGANIZATIONAL STRUCTURE OF OUR PYTHON FILE
-
-# 1. IMPORTS AT THE TOP
+# Rock Paper Scissors Game (Command Script_)
 import random
 
-# 2. FOLLOWED BY ANY CONSTANTS
-VALID_OPTIONS = ["rock", "paper", "scissors"]
+# Define valid options and winning conditions
 
-# each option and the option it beats
+VALID_OPTIONS = ["rock", "paper", "scissors"]
 WINS_AGAINST = {"rock": "scissors", "paper": "rock", "scissors": "paper"}
 
-# 3. FUNCTIONS OR CLASSES
+# How to determine the winner
 
+def determine_winner(user_choice, computer_choice):
+    """Returns "user", "computer", or "tie"."""
+    if user_choice not in VALID_OPTIONS or computer_choice not in VALID_OPTIONS:
+        raise ValueError("Invalid choice")
+    if user_choice == computer_choice:
+        return "tie"
+    if WINS_AGAINST[user_choice] == computer_choice:
+        return "user"
+    return "computer"
 
-def determine_winner(u, c):
-    # u is the user's choice, c is the computer's choice
-    # returns "TIE GAME", "USER WINS", or "COMPUTER WINS"
+# ASK USER FOR AN INPUT (R/P/S)
 
-    if u == c:
-        return "TIE GAME"
-    elif WINS_AGAINST[u] == c:
-        return "USER WINS"
+def play():
+    user_choice = input("Choose rock, paper, or scissors: ").lower().strip()
+    if user_choice not in VALID_OPTIONS:
+        print("Oops, invalid choice. Please try again.")
+        return
+    
+    computer_choice = random.choice(VALID_OPTIONS)
+    print(f"You chose: {user_choice}")
+    print(f"Computer chose: {computer_choice}")
+
+    result = determine_winner(user_choice, computer_choice)
+    if result == "tie":
+        print("It's a tie!")
+    elif result == "user":
+        print("You win!")
     else:
-        return "COMPUTER WINS"
+        print("Computer wins!")
 
-
-# 4. MAIN CONDITIONAL
 
 if __name__ == "__main__":
-    # ONLY RUN THE CODE BELOW
-    # IF WE EXECUTE THIS FILE FROM THE COMMAND LINE
-    # BUT NOT IF WE IMPORT FROM THIS FILE
-
-    # ASK USER FOR AN INPUT (R/P/S)
-
-    user_choice = input("Please choose one of 'rock', 'paper', or 'scissors': ")
-    user_choice = user_choice.lower().strip()
-    print("USER:", user_choice)
-
-    # VALIDATIONS
-
-    if user_choice not in VALID_OPTIONS:
-        print("OOPS INVALID INPUT, PLEASE TRY AGAIN")
-        quit()
-
-    # GENERATE RANDOM COMPUTER CHOICE
-
-    computer_choice = random.choice(VALID_OPTIONS)
-    print("COMP:", computer_choice)
-
-    # DETERMINE THE WINNER
-
-    winner = determine_winner(u=user_choice, c=computer_choice)
-    print(winner)
+    play()

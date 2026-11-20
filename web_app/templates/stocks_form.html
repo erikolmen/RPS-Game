@@ -1,0 +1,18 @@
+{% extends "bootstrap_5_layout.html" %}
+{% set active_page = "stocks_form" %}
+
+{% block content %}
+
+    <h2>Stocks Form</h2>
+
+    <p>Request some stock market data...</p>
+
+    <form action="/stocks/dashboard" method="POST" style="max-width: 320px;">
+
+        <label for="symbol" class="form-label">Stock Symbol:</label>
+        <input type="text" class="form-control mb-3" id="symbol" name="symbol" placeholder="MSFT" value="MSFT">
+
+        <button class="btn btn-success">Submit</button>
+    </form>
+
+{% endblock %}
