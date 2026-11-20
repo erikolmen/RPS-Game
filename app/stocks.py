@@ -2,6 +2,7 @@
 
 # 1. IMPORTS AT THE TOP
 import os
+import time
 
 from dotenv import load_dotenv
 from pandas import read_csv
@@ -21,10 +22,17 @@ def format_usd(price):
     return f"${price:,.2f}"
 
 
-def fetch_stocks_data(symbol):
+def fetch_stocks_data(symbol, retries=3):
     # gets the daily stock prices for the given symbol (most recent day first)
     request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={ALPHAVANTAGE_API_KEY}&outputsize=full&datatype=csv"
-    return read_csv(request_url)
+    for _ in range(retries):
+        df = read_csv(request_url)
+        # the API allows about 1 request per second, and returns an "Information" message
+        # instead of data when we go faster than that, so wait a moment and try again
+        if "Information" not in df.to_string():
+            break
+        time.sleep(1.5)
+    return df
 
 
 def get_latest_close(df):

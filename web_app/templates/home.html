@@ -1,0 +1,15 @@
+{% extends "bootstrap_5_layout.html" %}
+{% set active_page = "home" %}
+
+{% block content %}
+
+    <h1>Welcome Home</h1>
+
+    <p class="lead">This web app lets you play Rock, Paper, Scissors and look up stock market data.</p>
+
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" href="/rps/form">Play Rock, Paper, Scissors</a>
+        <a class="btn btn-outline-primary" href="/stocks/form">Stocks Dashboard</a>
+    </div>
+
+{% endblock %}
