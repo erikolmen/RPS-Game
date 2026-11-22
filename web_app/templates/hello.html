@@ -1,19 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Erik's Web App</title>
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/about">About</a> |
-        <a href="/hello">Hello</a>
-    </nav>
+{% extends "layout.html" %}
+
+{% block content %}
 
     <h1>{{ message }}</h1>
 
     <p>Try adding a name to the URL, like <a href="/hello?name=Erik">/hello?name=Erik</a>.</p>
 
-</body>
-</html>
+{% endblock %}
