@@ -1,5 +1,6 @@
-
 # this is the "test/rps_test.py" file...
+
+import pytest
 
 from app.rps import determine_winner
 
@@ -11,14 +12,19 @@ def test_example():
 def test_winners():
     # tests for all edge cases:
 
-    assert determine_winner(u="rock", c="rock") == "TIE GAME"
-    assert determine_winner(u="rock", c="paper") == "COMPUTER WINS"
-    assert determine_winner(u="rock", c="scissors") == "USER WINS"
+    assert determine_winner("rock", "rock") == "tie"
+    assert determine_winner("rock", "paper") == "computer"
+    assert determine_winner("rock", "scissors") == "user"
 
-    assert determine_winner(u="paper", c="rock") == "USER WINS"
-    assert determine_winner(u="paper", c="paper") == "TIE GAME"
-    assert determine_winner(u="paper", c="scissors") == "COMPUTER WINS"
+    assert determine_winner("paper", "rock") == "user"
+    assert determine_winner("paper", "paper") == "tie"
+    assert determine_winner("paper", "scissors") == "computer"
 
-    assert determine_winner(u="scissors", c="scissors") == "TIE GAME"
-    assert determine_winner(u="scissors", c="paper") == "USER WINS"
-    assert determine_winner(u="scissors", c="rock") == "COMPUTER WINS"
+    assert determine_winner("scissors", "scissors") == "tie"
+    assert determine_winner("scissors", "paper") == "user"
+    assert determine_winner("scissors", "rock") == "computer"
+
+
+def test_invalid_choice():
+    with pytest.raises(ValueError):
+        determine_winner("lizard", "rock")
