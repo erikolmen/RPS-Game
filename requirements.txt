@@ -4,6 +4,7 @@ python-dotenv
 pandas
 plotly
 flask
+gunicorn
 
 # packages used for testing:
 pytest
