@@ -1,4 +1,5 @@
-{% extends "layout.html" %}
+{% extends "bootstrap_5_layout.html" %}
+{% set active_page = "rps_form" %}
 
 {% block content %}
 
@@ -6,16 +7,16 @@
 
     <p>Choose your move, then click the button to play against the computer.</p>
 
-    <form action="/rps/results" method="POST">
+    <form action="/rps/results" method="POST" style="max-width: 320px;">
 
-        <label for="user_choice">Your Choice:</label>
-        <select id="user_choice" name="user_choice">
+        <label for="user_choice" class="form-label">Your Choice:</label>
+        <select class="form-select mb-3" id="user_choice" name="user_choice">
             {% for option in options %}
                 <option value="{{ option }}">{{ option | title }}</option>
             {% endfor %}
         </select>
 
-        <button>Play</button>
+        <button class="btn btn-success">Play</button>
     </form>
 
 {% endblock %}

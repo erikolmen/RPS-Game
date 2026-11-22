@@ -1,16 +1,23 @@
-{% extends "layout.html" %}
+{% extends "bootstrap_5_layout.html" %}
+{% set active_page = "rps_form" %}
 
 {% block content %}
 
     <h2>Game Results</h2>
 
-    <ul>
-        <li>You chose: <strong>{{ user_choice }}</strong></li>
-        <li>Computer chose: <strong>{{ computer_choice }}</strong></li>
+    <ul class="list-group mb-3" style="max-width: 320px;">
+        <li class="list-group-item">You chose: <strong>{{ user_choice }}</strong></li>
+        <li class="list-group-item">Computer chose: <strong>{{ computer_choice }}</strong></li>
     </ul>
 
-    <p>{{ message }}</p>
+    {% if winner == "user" %}
+        <p class="lead text-success">{{ message }}</p>
+    {% elif winner == "computer" %}
+        <p class="lead text-danger">{{ message }}</p>
+    {% else %}
+        <p class="lead text-secondary">{{ message }}</p>
+    {% endif %}
 
-    <a href="/rps/form">Play Again</a>
+    <a class="btn btn-primary" href="/rps/form">Play Again</a>
 
 {% endblock %}
