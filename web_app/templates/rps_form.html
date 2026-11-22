@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h2>Rock, Paper, Scissors</h2>
+
+    <p>Choose your move, then click the button to play against the computer.</p>
+
+    <form action="/rps/results" method="POST">
+
+        <label for="user_choice">Your Choice:</label>
+        <select id="user_choice" name="user_choice">
+            {% for option in options %}
+                <option value="{{ option }}">{{ option | title }}</option>
+            {% endfor %}
+        </select>
+
+        <button>Play</button>
+    </form>
+
+{% endblock %}
