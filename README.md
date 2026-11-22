@@ -129,4 +129,4 @@ If any of these steps fail, the pull request shows a red X, and the code should 
 
 ## AI Credit
 
-I used Claude Code to help review my code, simplify in areas, and check that my tests and CI build pass. I also used it to help build the Flask web app (routes, templates, Bootstrap layout, flash messaging, and web app tests).
+I used Claude Code to help review my code, simplify in areas, and check that my tests and CI build pass. I also used it to help troubleshoot the Flask web app (routes, templates, Bootstrap layout, flash messaging, and web app tests) when I had trouble or needed help.
