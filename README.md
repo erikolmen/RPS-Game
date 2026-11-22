@@ -1,6 +1,6 @@
 # RPS-Game
 
-A command-line game of Rock, Paper, Scissors, plus a stocks dashboard, written in Python.
+A game of Rock, Paper, Scissors, plus a stocks dashboard, written in Python. Both can be used from the command line or through a Flask web app.
 
 ## Prerequisites
 
@@ -42,6 +42,9 @@ For the stocks dashboard, you will need to acquire a "premium" [AlphaVantage](ht
 
 # replace "demo" with your premium key:
 ALPHAVANTAGE_API_KEY="demo"
+
+# used by the web app for flash messaging (set to any random string):
+SECRET_KEY="super secret"
 ```
 
 The ".env" file is listed in the ".gitignore" file, so your key will NOT be uploaded to GitHub.
@@ -64,6 +67,44 @@ Run the stocks dashboard:
 ```sh
 python -m app.stocks
 ```
+
+Run the web app (then visit http://localhost:5000 in a browser):
+
+```sh
+# Mac OS:
+FLASK_APP=web_app flask run
+
+# Windows OS:
+# ... if `export` doesn't work for you, try `set` instead
+export FLASK_APP=web_app
+flask run
+```
+
+The web app has these pages:
+
+| Route | Description |
+| --- | --- |
+| `/`, `/about`, `/hello?name=Erik` | Basic home routes |
+| `/rps/form` | Pick rock, paper, or scissors from a dropdown and play |
+| `/rps/results` | Shows both choices and who won |
+| `/stocks/form` | Enter a stock symbol |
+| `/stocks/dashboard?symbol=MSFT` | Latest close, a chart of prices over time, and a table of recent prices |
+
+All pages share a Bootstrap layout with a custom navbar. An invalid stock symbol shows a flash message and redirects back to the stocks form.
+
+## Deployment
+
+The web app is deployed to [Render](https://render.com) as a "Web Service":
+
+1. In the [Render dashboard](https://dashboard.render.com), create a New "Web Service" from this GitHub repo.
+2. Build command: `pip install -r requirements.txt`
+3. Start command: `gunicorn "web_app:create_app()"`
+4. Instance type: "Free".
+5. Environment variables: `ALPHAVANTAGE_API_KEY` (your key, no quotes) and `SECRET_KEY` (any random string).
+
+Each push to the `main` branch triggers a new deploy.
+
+Production URL: _(add your onrender.com URL here)_
 
 ## Testing
 
@@ -88,4 +129,4 @@ If any of these steps fail, the pull request shows a red X, and the code should 
 
 ## AI Credit
 
-I used Claude Code to help review my code, simplify in areas, and check that my tests and CI build pass.
+I used Claude Code to help review my code, simplify in areas, and check that my tests and CI build pass. I also used it to help build the Flask web app (routes, templates, Bootstrap layout, flash messaging, and web app tests).
