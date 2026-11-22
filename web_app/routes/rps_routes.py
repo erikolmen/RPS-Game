@@ -2,7 +2,7 @@
 
 import random
 
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, flash
 
 from app.rps import VALID_OPTIONS, determine_winner
 
@@ -37,6 +37,7 @@ def rps_results():
     user_choice = (request_data.get("user_choice") or "").lower().strip()
 
     if user_choice not in VALID_OPTIONS:
+        flash("Invalid choice. Please select rock, paper, or scissors.", "danger")
         return redirect("/rps/form")
 
     computer_choice = random.choice(VALID_OPTIONS)
