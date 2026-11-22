@@ -7,3 +7,4 @@ flask
 
 # packages used for testing:
 pytest
+beautifulsoup4
