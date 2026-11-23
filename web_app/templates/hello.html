@@ -1,10 +1,35 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "hello" %}
 
+{% block title %}Hello | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h1>{{ message }}</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header card-header-brand py-3">
+                    <h1>{{ message }}</h1>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-body-secondary">
+                        This page reads a name from the URL, like <a href="/hello?name=Erik">/hello?name=Erik</a>.
+                        Type a name below to try it.
+                    </p>
 
-    <p>Try adding a name to the URL, like <a href="/hello?name=Erik">/hello?name=Erik</a>.</p>
+                    <form action="/hello" method="GET">
+                        <label for="name" class="form-label fw-semibold">Your Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Erik">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send me-1"></i>Say Hello
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

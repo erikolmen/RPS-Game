@@ -1,10 +1,54 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "about" %}
 
+{% block title %}About | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h1>About Me</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header card-header-brand py-3">
+                    <h1>About Me</h1>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead">This app was built for the Intro to Python web app exercise, using Flask and Bootstrap.</p>
 
-    <p>This app was built for the Intro to Python web app exercise, using Flask and Bootstrap.</p>
+                    <ul class="list-group list-group-flush border-top border-bottom mb-4">
+                        <li class="list-group-item px-0 py-3 d-flex align-items-start">
+                            <i class="bi bi-controller text-primary fs-5 me-3"></i>
+                            <div>
+                                <div class="fw-semibold">Rock, Paper, Scissors</div>
+                                <div class="text-body-secondary small">Pick a move from a dropdown, play against the computer, and keep score.</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-0 py-3 d-flex align-items-start">
+                            <i class="bi bi-graph-up-arrow text-success fs-5 me-3"></i>
+                            <div>
+                                <div class="fw-semibold">Stocks Dashboard</div>
+                                <div class="text-body-secondary small">Daily stock prices from the AlphaVantage API, shown as summary stats, a Plotly chart, and a table.</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-0 py-3 d-flex align-items-start">
+                            <i class="bi bi-check2-circle text-warning fs-5 me-3"></i>
+                            <div>
+                                <div class="fw-semibold">Tested and Deployed</div>
+                                <div class="text-body-secondary small">Automated tests run on GitHub Actions, and the app is hosted on Render.</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge rounded-pill text-bg-dark">Python</span>
+                        <span class="badge rounded-pill text-bg-dark">Flask</span>
+                        <span class="badge rounded-pill text-bg-dark">Jinja</span>
+                        <span class="badge rounded-pill text-bg-dark">Bootstrap 5</span>
+                        <span class="badge rounded-pill text-bg-dark">Plotly</span>
+                        <span class="badge rounded-pill text-bg-dark">pytest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

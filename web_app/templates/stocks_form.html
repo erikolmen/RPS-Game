@@ -1,18 +1,45 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "stocks_form" %}
 
+{% block title %}Stocks Form | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h2>Stocks Form</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header card-header-brand py-3">
+                    <h2>Stocks Form</h2>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-body-secondary">Enter a stock ticker symbol to see its latest prices and a chart of its history.</p>
 
-    <p>Request some stock market data...</p>
+                    <form action="/stocks/dashboard" method="POST">
+                        <label for="symbol" class="form-label fw-semibold">Stock Symbol:</label>
+                        <div class="input-group input-group-lg mb-4">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control text-uppercase" id="symbol" name="symbol"
+                                placeholder="MSFT" value="MSFT" required>
+                        </div>
 
-    <form action="/stocks/dashboard" method="POST" style="max-width: 320px;">
+                        <div class="d-grid">
+                            <button class="btn btn-success btn-lg">
+                                <i class="bi bi-graph-up-arrow me-1"></i>Submit
+                            </button>
+                        </div>
+                    </form>
 
-        <label for="symbol" class="form-label">Stock Symbol:</label>
-        <input type="text" class="form-control mb-3" id="symbol" name="symbol" placeholder="MSFT" value="MSFT">
+                    <hr class="my-4">
 
-        <button class="btn btn-success">Submit</button>
-    </form>
+                    <div class="small text-body-secondary text-uppercase fw-semibold mb-2">Popular symbols</div>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for popular_symbol in popular_symbols %}
+                            <a class="btn btn-sm btn-outline-secondary" href="/stocks/dashboard?symbol={{ popular_symbol }}">{{ popular_symbol }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

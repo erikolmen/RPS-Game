@@ -1,23 +1,56 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "rps_form" %}
 
+{% block title %}Game Results | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h2>Game Results</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header card-header-brand py-3">
+                    <h2>Game Results</h2>
+                </div>
+                <div class="card-body p-4">
 
-    <ul class="list-group mb-3" style="max-width: 320px;">
-        <li class="list-group-item">You chose: <strong>{{ user_choice }}</strong></li>
-        <li class="list-group-item">Computer chose: <strong>{{ computer_choice }}</strong></li>
-    </ul>
+                    <div class="row align-items-center text-center g-3 mb-4">
+                        <div class="col">
+                            <div class="rps-hand mb-2">{{ emojis[user_choice] }}</div>
+                            <div>You chose: <strong>{{ user_choice }}</strong></div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="fs-4 fw-bold text-body-secondary">VS</span>
+                        </div>
+                        <div class="col">
+                            <div class="rps-hand mb-2">{{ emojis[computer_choice] }}</div>
+                            <div>Computer chose: <strong>{{ computer_choice }}</strong></div>
+                        </div>
+                    </div>
 
-    {% if winner == "user" %}
-        <p class="lead text-success">{{ message }}</p>
-    {% elif winner == "computer" %}
-        <p class="lead text-danger">{{ message }}</p>
-    {% else %}
-        <p class="lead text-secondary">{{ message }}</p>
-    {% endif %}
+                    {% if winner == "user" %}
+                        <div class="alert alert-success text-center fs-4 fw-semibold mb-4">
+                            <i class="bi bi-trophy-fill me-2"></i>{{ message }}
+                        </div>
+                    {% elif winner == "computer" %}
+                        <div class="alert alert-danger text-center fs-4 fw-semibold mb-4">
+                            <i class="bi bi-emoji-frown me-2"></i>{{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-secondary text-center fs-4 fw-semibold mb-4">
+                            <i class="bi bi-arrow-left-right me-2"></i>{{ message }}
+                        </div>
+                    {% endif %}
 
-    <a class="btn btn-primary" href="/rps/form">Play Again</a>
+                    {% include "rps_scoreboard.html" %}
+
+                    <div class="d-grid mt-3">
+                        <a class="btn btn-primary btn-lg" href="/rps/form">
+                            <i class="bi bi-arrow-repeat me-1"></i>Play Again
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
