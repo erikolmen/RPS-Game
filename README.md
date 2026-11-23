@@ -104,7 +104,7 @@ The web app is deployed to [Render](https://render.com) as a "Web Service":
 
 Each push to the `main` branch triggers a new deploy.
 
-Production URL: _(add your onrender.com URL here)_
+Production URL: https://erikolmen-rps-game.onrender.com
 
 ## Testing
 
