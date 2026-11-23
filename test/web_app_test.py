@@ -93,3 +93,20 @@ def test_stocks_invalid_symbol(test_client):
     assert response.status_code == 200
     assert b"<h2>Stocks Form</h2>" in response.data
     assert b"Market Data Error" in response.data
+
+
+def test_rps_scoreboard():
+    # a fresh client, so the score starts at zero
+    client = create_app().test_client()
+    for _ in range(3):
+        response = client.post("/rps/results", data={"user_choice": "paper"})
+        assert response.status_code == 200
+    soup = BeautifulSoup(response.data, features="html.parser")
+    badges = [badge.text for badge in soup.select(".badge")]
+    wins, losses, ties = [int(text.split(": ")[1]) for text in badges]
+    assert wins + losses + ties == 3
+
+    # resetting clears the score and shows a flash message
+    response = client.post("/rps/reset", follow_redirects=True)
+    assert b"Score reset" in response.data
+    assert b"Wins:" not in response.data

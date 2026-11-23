@@ -1,22 +1,45 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "rps_form" %}
 
+{% block title %}Rock, Paper, Scissors | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h2>Rock, Paper, Scissors</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header card-header-brand py-3">
+                    <h2>Rock, Paper, Scissors</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-center gap-4 mb-3 rps-hand" aria-hidden="true">
+                        <span>{{ emojis["rock"] }}</span><span>{{ emojis["paper"] }}</span><span>{{ emojis["scissors"] }}</span>
+                    </div>
 
-    <p>Choose your move, then click the button to play against the computer.</p>
+                    <p class="text-body-secondary text-center">Choose your move, then click the button to play against the computer.</p>
 
-    <form action="/rps/results" method="POST" style="max-width: 320px;">
+                    <form action="/rps/results" method="POST">
+                        <label for="user_choice" class="form-label fw-semibold">Your Choice:</label>
+                        <select class="form-select form-select-lg mb-4" id="user_choice" name="user_choice">
+                            {% for option in options %}
+                                <option value="{{ option }}">{{ emojis[option] }} {{ option | title }}</option>
+                            {% endfor %}
+                        </select>
 
-        <label for="user_choice" class="form-label">Your Choice:</label>
-        <select class="form-select mb-3" id="user_choice" name="user_choice">
-            {% for option in options %}
-                <option value="{{ option }}">{{ option | title }}</option>
-            {% endfor %}
-        </select>
+                        <div class="d-grid">
+                            <button class="btn btn-success btn-lg">
+                                <i class="bi bi-play-fill me-1"></i>Play
+                            </button>
+                        </div>
+                    </form>
 
-        <button class="btn btn-success">Play</button>
-    </form>
+                    {% if score.played %}
+                        <hr class="my-4">
+                        {% include "rps_scoreboard.html" %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
