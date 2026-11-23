@@ -1,15 +1,55 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "home" %}
 
+{% block title %}Home | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h1>Welcome Home</h1>
+    <section class="hero rounded-4 shadow-sm p-4 p-md-5 mb-4">
+        <h1>Welcome Home</h1>
+        <p class="fs-5 col-lg-8 opacity-75 mb-4">
+            Challenge the computer to a game of Rock, Paper, Scissors, or look up real stock market data
+            with an interactive chart.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-warning btn-lg fw-semibold" href="/rps/form">
+                <i class="bi bi-controller me-2"></i>Play Rock, Paper, Scissors
+            </a>
+            <a class="btn btn-outline-light btn-lg" href="/stocks/form">
+                <i class="bi bi-graph-up-arrow me-2"></i>Stocks Dashboard
+            </a>
+        </div>
+    </section>
 
-    <p class="lead">This web app lets you play Rock, Paper, Scissors and look up stock market data.</p>
-
-    <div class="d-flex gap-2">
-        <a class="btn btn-primary" href="/rps/form">Play Rock, Paper, Scissors</a>
-        <a class="btn btn-outline-primary" href="/stocks/form">Stocks Dashboard</a>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-3 bg-primary-subtle text-primary mb-3">
+                        <i class="bi bi-controller"></i>
+                    </div>
+                    <h2 class="h5 fw-semibold">Rock, Paper, Scissors</h2>
+                    <p class="text-body-secondary flex-grow-1">
+                        Pick your move from the menu and see if you can beat the computer. Your score is kept as you play.
+                    </p>
+                    <a class="btn btn-outline-primary align-self-start" href="/rps/form">Play a round</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="feature-icon d-inline-flex align-items-center justify-content-center rounded-3 bg-success-subtle text-success mb-3">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+                    <h2 class="h5 fw-semibold">Stocks Dashboard</h2>
+                    <p class="text-body-secondary flex-grow-1">
+                        Enter a ticker symbol to see the latest close, daily change, 52-week range, a price chart, and recent prices.
+                    </p>
+                    <a class="btn btn-outline-success align-self-start" href="/stocks/form">Look up a stock</a>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
