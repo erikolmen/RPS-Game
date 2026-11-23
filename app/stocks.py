@@ -2,6 +2,7 @@
 
 # 1. IMPORTS AT THE TOP
 import os
+import random
 import time
 
 from dotenv import load_dotenv
@@ -22,16 +23,22 @@ def format_usd(price):
     return f"${price:,.2f}"
 
 
-def fetch_stocks_data(symbol, retries=3):
+def is_rate_limited(df):
+    # the API allows about 1 request per second, and sends back an "Information" message
+    # instead of stock data when we go faster than that
+    return "adjusted_close" not in df.columns and "Information" in df.to_string()
+
+
+def fetch_stocks_data(symbol, retries=5):
     # gets the daily stock prices for the given symbol (most recent day first)
     request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={ALPHAVANTAGE_API_KEY}&outputsize=full&datatype=csv"
-    for _ in range(retries):
+    for attempt in range(1, retries + 1):
         df = read_csv(request_url)
-        # the API allows about 1 request per second, and returns an "Information" message
-        # instead of data when we go faster than that, so wait a moment and try again
-        if "Information" not in df.to_string():
+        if not is_rate_limited(df) or attempt == retries:
             break
-        time.sleep(1.5)
+        # wait a little longer after each try (plus a bit of randomness,
+        # so test runs that start at the same time spread out), then try again
+        time.sleep(attempt * 1.5 + random.uniform(0, 1))
     return df
 
 
