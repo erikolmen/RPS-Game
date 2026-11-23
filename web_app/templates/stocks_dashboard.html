@@ -1,42 +1,103 @@
 {% extends "bootstrap_5_layout.html" %}
 {% set active_page = "stocks_form" %}
 
+{% block title %}{{ symbol }} Dashboard | Erik's Web App{% endblock %}
+
 {% block content %}
 
-    <h2>Stocks Dashboard ({{ symbol }})</h2>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+            <h2>Stocks Dashboard ({{ symbol }})</h2>
+            <p class="text-body-secondary mb-0">Latest Close: {{ latest_close_usd }} (as of {{ latest_date }})</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="/stocks/form">
+            <i class="bi bi-search me-1"></i>Look up another stock
+        </a>
+    </div>
 
-    <p class="lead">Latest Close: {{ latest_close_usd }} (as of {{ latest_date }})</p>
+    <!-- SUMMARY STATS -->
+    {% set is_up = stats.change >= 0 %}
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="small text-body-secondary">Latest Close</div>
+                    <div class="fs-4 fw-bold">{{ latest_close_usd }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="small text-body-secondary">Daily Change</div>
+                    <div class="fs-4 fw-bold {{ 'text-success' if is_up else 'text-danger' }}">
+                        <i class="bi {{ 'bi-caret-up-fill' if is_up else 'bi-caret-down-fill' }}"></i>
+                        {{ "%+.2f"|format(stats.change_pct) }}%
+                    </div>
+                    <div class="small {{ 'text-success' if is_up else 'text-danger' }}">
+                        {{ "+" if is_up else "-" }}{{ format_usd(stats.change|abs) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="small text-body-secondary">52-Week High</div>
+                    <div class="fs-4 fw-bold">{{ format_usd(stats.high_52wk) }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="small text-body-secondary">52-Week Low</div>
+                    <div class="fs-4 fw-bold">{{ format_usd(stats.low_52wk) }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div id="chart-container"></div>
+    <!-- CHART -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div id="chart-container"></div>
+        </div>
+    </div>
 
-    <h3 class="mt-4">Recent Prices</h3>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Open</th>
-                    <th>High</th>
-                    <th>Low</th>
-                    <th>Close</th>
-                    <th>Adjusted Close</th>
-                    <th>Volume</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data[:30] %}
+    <!-- TABLE -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h3 class="h5 mb-0">Recent Prices</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
                     <tr>
-                        <td>{{ row["timestamp"] }}</td>
-                        <td>${{ "%.2f"|format(row["open"]) }}</td>
-                        <td>${{ "%.2f"|format(row["high"]) }}</td>
-                        <td>${{ "%.2f"|format(row["low"]) }}</td>
-                        <td>${{ "%.2f"|format(row["close"]) }}</td>
-                        <td>${{ "%.2f"|format(row["adjusted_close"]) }}</td>
-                        <td>{{ "{:,}".format(row["volume"]) }}</td>
+                        <th>Date</th>
+                        <th class="text-end">Open</th>
+                        <th class="text-end">High</th>
+                        <th class="text-end">Low</th>
+                        <th class="text-end">Close</th>
+                        <th class="text-end">Adjusted Close</th>
+                        <th class="text-end">Volume</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for row in data[:30] %}
+                        <tr>
+                            <td>{{ row["timestamp"] }}</td>
+                            <td class="text-end">${{ "%.2f"|format(row["open"]) }}</td>
+                            <td class="text-end">${{ "%.2f"|format(row["high"]) }}</td>
+                            <td class="text-end">${{ "%.2f"|format(row["low"]) }}</td>
+                            <td class="text-end">${{ "%.2f"|format(row["close"]) }}</td>
+                            <td class="text-end fw-semibold">${{ "%.2f"|format(row["adjusted_close"]) }}</td>
+                            <td class="text-end">{{ "{:,}".format(row["volume"]) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
@@ -56,16 +117,62 @@
         var series = {
             x: dates,
             y: closingPrices,
-            mode: "lines"
+            mode: "lines",
+            line: {color: "#14638f", width: 2},
+            fill: "tozeroy",
+            fillcolor: "rgba(20, 99, 143, 0.1)",
+            hovertemplate: "%{x}<br>$%{y:.2f}<extra></extra>"
         }
+
+        // start zoomed in on the last year, with buttons to change the range
+        // see: https://plotly.com/javascript/range-slider/
+        var oneYearAgo = new Date(dates[0])
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
+
         var layout = {
-            title: "Daily Closing Prices for Stock: " + symbol,
-            height: 500,
+            title: {text: "Daily Closing Prices for Stock: " + symbol},
+            height: 480,
+            margin: {t: 60, r: 20, b: 40, l: 60},
+            xaxis: {
+                range: [oneYearAgo.toISOString().slice(0, 10), dates[0]],
+                rangeselector: {
+                    buttons: [
+                        {count: 1, label: "1M", step: "month", stepmode: "backward"},
+                        {count: 6, label: "6M", step: "month", stepmode: "backward"},
+                        {count: 1, label: "1Y", step: "year", stepmode: "backward"},
+                        {count: 5, label: "5Y", step: "year", stepmode: "backward"},
+                        {step: "all", label: "All"}
+                    ]
+                }
+            },
             yaxis: {
-                tickformat: "$" // https://plotly.com/javascript/tick-formatting/
+                tickformat: "$,.0f" // https://plotly.com/javascript/tick-formatting/
             }
         }
-        Plotly.newPlot("chart-container", [series], layout, {responsive: true})
+
+        // fit the price axis to the dates currently shown, so the line fills the chart
+        function fitPriceAxis(start, end) {
+            var visible = closingPrices.filter((price, i) => (!start || dates[i] >= start) && (!end || dates[i] <= end))
+            if (visible.length === 0) { return }
+            var low = Math.min(...visible)
+            var high = Math.max(...visible)
+            var padding = (high - low) * 0.05 || 1
+            Plotly.relayout("chart-container", {"yaxis.range": [Math.max(0, low - padding), high + padding]})
+        }
+
+        Plotly.newPlot("chart-container", [series], layout, {responsive: true, displayModeBar: false}).then(function(chart) {
+            fitPriceAxis(layout.xaxis.range[0], layout.xaxis.range[1])
+
+            // when the user clicks a range button or zooms, refit the price axis
+            chart.on("plotly_relayout", function(event) {
+                if (event["xaxis.autorange"]) {
+                    fitPriceAxis(null, null)
+                } else if (event["xaxis.range[0]"] || event["xaxis.range"]) {
+                    var range = event["xaxis.range"] || [event["xaxis.range[0]"], event["xaxis.range[1]"]]
+                    fitPriceAxis(String(range[0]).slice(0, 10), String(range[1]).slice(0, 10))
+                }
+            })
+        })
 
     </script>
 

@@ -40,6 +40,21 @@ def get_latest_close(df):
     return df["adjusted_close"][0]
 
 
+def get_summary_stats(df):
+    # summary numbers for the dashboard (rows are most recent day first)
+    latest_close = float(df["adjusted_close"].iloc[0])
+    previous_close = float(df["adjusted_close"].iloc[1])
+    change = latest_close - previous_close
+    last_year = df["adjusted_close"].iloc[:252]  # about 252 trading days in a year
+    return {
+        "latest_close": latest_close,
+        "change": change,
+        "change_pct": change / previous_close * 100,
+        "high_52wk": float(last_year.max()),
+        "low_52wk": float(last_year.min()),
+    }
+
+
 def make_chart(df, symbol):
     # makes a line chart of the stock price over time
     title = f"Stock Prices over Time ({symbol})"

@@ -3,7 +3,7 @@
 
 from pandas import DataFrame
 
-from app.stocks import format_usd, fetch_stocks_data, get_latest_close, make_chart
+from app.stocks import format_usd, fetch_stocks_data, get_latest_close, get_summary_stats, make_chart
 
 # fetch the data once, and re-use it in each test below
 # (to avoid calling the API too many times in a row)
@@ -30,3 +30,10 @@ def test_latest_close():
 def test_make_chart():
     fig = make_chart(df, "NFLX")
     assert fig.layout.title.text == "Stock Prices over Time (NFLX)"
+
+
+def test_summary_stats():
+    stats = get_summary_stats(df)
+    assert stats["latest_close"] == df["adjusted_close"][0]
+    assert round(stats["change"], 4) == round(df["adjusted_close"][0] - df["adjusted_close"][1], 4)
+    assert stats["low_52wk"] <= stats["latest_close"] <= stats["high_52wk"]
